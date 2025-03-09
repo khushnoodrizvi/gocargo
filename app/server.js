@@ -29,8 +29,8 @@ app.use(sessions({
   store: store,
   cookie: {
     secure: false, // Important for local testing
-    httpOnly: false, // Prevents XSS attacks
-    sameSite: false, // Allows cross-origin cookies for navigation
+    httpOnly: true, // Prevents XSS attacks
+    sameSite: "none", // Allows cross-origin cookies for navigation
     maxAge: 1000 * 60 * 60 * 24,
     path: "/", // Cookie path 
   },
