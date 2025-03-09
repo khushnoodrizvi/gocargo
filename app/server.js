@@ -29,6 +29,8 @@ app.use(sessions({
   store: store,
   cookie: {
     secure: false, // Important for local testing
+    httpOnly: true, // Prevents XSS attacks
+    sameSite: "lax", // Allows cross-origin cookies for navigation
   },
 }));
 
