@@ -40,6 +40,11 @@ const db = mongoose.connection
 db.on('error', err => console.log(err))
 db.once('open', () => console.log('database connected!'))
 
+app.use((req, res, next) => {
+  console.log(req.session)
+  next();
+})
+
 app.use('/auth',auth)
 app.use('/users',users)
 app.use('/cars',car)
