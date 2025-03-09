@@ -22,17 +22,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}))
 app.use(sessions({
-  name : 'chat.sid',
+  name : 'gocargo.sid',
   secret: "my secret",
   saveUninitialized:true,
   resave: true,
   store: store,
   cookie: {
     secure: false, // Important for local testing
-    httpOnly: true, // Prevents XSS attacks
-    sameSite: "lax", // Allows cross-origin cookies for navigation
+    httpOnly: false, // Prevents XSS attacks
+    sameSite: false, // Allows cross-origin cookies for navigation
     maxAge: 1000 * 60 * 60 * 24,
-    path: "/",
+    path: "/", // Cookie path 
   },
 }));
 
