@@ -20,13 +20,16 @@ const store = new mongoDBStrore({
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
-app.use(cors({credentials: true}))
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}))
 app.use(sessions({
   name : 'chat.sid',
   secret: "my secret",
   saveUninitialized:true,
   resave: true,
-  store: store
+  store: store,
+  cookie: {
+    secure: false, // Important for local testing
+  },
 }));
 
 const db = mongoose.connection
