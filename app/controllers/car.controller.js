@@ -31,3 +31,30 @@ exports.getCarById = async (req, res, next) => {
         res.status(400).json({ message: error.message })
     }
 }
+
+exports.searchCar = async (req, res, next) => {
+    try {
+        const lat = parseFloat(req.query.lat);
+        const long = parseFloat(req.query.long);
+        if(isNaN(lat) || isNaN(long)){
+            return res.status(400).json({
+                message: "Invalid coordinates"
+            })
+        }
+        const car = await carSchema.find({
+            location: {
+                $near: {
+                    $geometry: {
+                        type: "Point",
+                        coordinates: [lat, long]
+                    },
+                    $maxDistance: 1000
+                }
+            },
+        });
+        
+        res.status(200).json(car)
+    } catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+}

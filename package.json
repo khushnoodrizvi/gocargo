@@ -1,5 +1,5 @@
 {
-  "name": "chat-app",
+  "name": "gocargo",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -32,10 +32,8 @@
   },
   "scripts": {
     "start": "node index.js",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "heroku-postbuild": "npm install && node index.js",
-    "server": "node index.js"
+    "server": "node index.js",
+    "build": "build"
   },
   "eslintConfig": {
     "extends": [

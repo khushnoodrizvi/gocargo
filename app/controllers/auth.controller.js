@@ -32,6 +32,19 @@ exports.signIn = async (req, res, next) => {
     }
 }
 
+exports.signOut = async (req, res, next) => {
+    req.session.destroy((err)=>{
+        if(err){
+            return res.send({
+                message: "Error in logging out"
+            })
+        }
+        res.send({
+            message: "Logged out"
+        })
+    })
+}
+
 exports.signedInUser = async (req, res, next) => {
     if(req.session.isLoggedIn){
         const {_id, name, email, profile_pic} = req.session.user;

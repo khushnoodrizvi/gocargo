@@ -2,12 +2,24 @@ const mongoose = require('mongoose')
 const { Schema } = mongoose;
 
 const carSchema = new Schema({
-  name:  String,
+  name: String,
   accessories: [String],
   images: [String],
-  location: {address: String, lat: Number, lng: Number, city: String},
-  price: {striked_price: String, selling_price: String},
-  host: {name: String, profile_pic: String},
+  location: {
+    type: {
+      type: String,
+      enum: ['Point'], // Only "Point" type is allowed
+      required: true,
+    },
+    coordinates: {
+      type: [Number], // Array of numbers: [longitude, latitude]
+      required: true,
+      index: '2dsphere', // Enables geospatial queries
+    },
+  },
+  area: { address: String, city: String },
+  price: { striked_price: String, selling_price: String },
+  host: { name: String, profile_pic: String },
   rating: Number,
   trips: Number,
   type: String,
