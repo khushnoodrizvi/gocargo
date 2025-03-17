@@ -8,6 +8,7 @@ const users = require('./routes/router')
 const auth = require('./routes/auth.router')
 const car = require('./routes/car.router')
 const { DATABASE_URL } = require('./common/config');
+const Razorpay = require('razorpay');
 
 const app = express()
 
@@ -35,6 +36,26 @@ app.use(sessions({
     path: "/", // Cookie path 
   },
 }));
+
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
+});
+
+app.post("/create-order", async (req, res) => {
+  try {
+    const options = {
+      amount: req.body.amount * 100, // Amount in paise (INR)
+      currency: "INR",
+      receipt: "order_rcptid_11",
+    };
+
+    const order = await razorpay.orders.create(options);
+    res.json(order);
+  } catch (error) {
+    res.status(500).json({ message: "Error creating order", error });
+  }
+});
 
 const db = mongoose.connection
 db.on('error', err => console.log(err))
