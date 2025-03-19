@@ -21,7 +21,7 @@ const store = new mongoDBStrore({
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
-app.use(cors({credentials: true, origin: 'http://localhost:3000'}))
+app.use(cors({credentials: true, origin: 'https://gocargo-1.onrender.com'}))
 app.use(sessions({
   name : 'gocargo.sid',
   secret: "my secret",
