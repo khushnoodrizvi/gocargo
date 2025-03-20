@@ -46,7 +46,7 @@ app.use(sessions({
   cookie: {
     secure: process.env.NODE_ENV === "production", // Important for local testing
     httpOnly: true, // Prevents XSS attacks
-    sameSite: "lax", // Allows cross-origin cookies for navigation
+    sameSite: "None", // Allows cross-origin cookies for navigation
     maxAge: 1000 * 60 * 60 * 24,
     path: "/", // Cookie path 
   },
