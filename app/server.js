@@ -21,7 +21,22 @@ const store = new mongoDBStrore({
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
-app.use(cors({credentials: true, origin: 'https://gocargo-1.netlify.app'}))
+
+const allowedOrigins = [
+  "https://gocargo-1.netlify.app",
+  "http://localhost:3000",
+];
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+}));
+
 app.use(sessions({
   name : 'gocargo.sid',
   secret: "my secret",
