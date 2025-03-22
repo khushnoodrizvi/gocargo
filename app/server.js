@@ -31,7 +31,7 @@ app.use(sessions({
   resave: true,
   store: store,
   cookie: {
-    secure: process.env.NODE_ENV === "production", // Important for local testing
+    secure: true, // Important for local testing
     httpOnly: true, // Prevents XSS attacks
     sameSite: "lax", // Allows cross-origin cookies for navigation
     maxAge: 1000 * 60 * 60 * 24,
