@@ -22,20 +22,7 @@ const store = new mongoDBStrore({
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 
-const allowedOrigins = [
-  "https://gocargo-1.netlify.app",
-  "http://localhost:3000",
-];
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-}));
+app.use(cors({credentials: true, origin: '*'}))
 
 app.use(sessions({
   name : 'gocargo.sid',
@@ -44,9 +31,9 @@ app.use(sessions({
   resave: true,
   store: store,
   cookie: {
-    secure: true, // Important for local testing
+    secure: process.env.NODE_ENV === "production", // Important for local testing
     httpOnly: true, // Prevents XSS attacks
-    sameSite: "None", // Allows cross-origin cookies for navigation
+    sameSite: "lax", // Allows cross-origin cookies for navigation
     maxAge: 1000 * 60 * 60 * 24,
     path: "/", // Cookie path 
   },
