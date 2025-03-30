@@ -19,7 +19,7 @@ const carSchema = new Schema({
   },
   area: { address: String, city: String },
   price: { striked_price: String, selling_price: String },
-  host: { name: String, profile_pic: String },
+  host: { type: mongoose.Schema.Types.ObjectId, ref: "users", required: true },
   rating: Number,
   trips: Number,
   type: String,
@@ -30,6 +30,7 @@ const carSchema = new Schema({
   car_features: [String],
 });
 
-
+// Ensure the 2dsphere index is created
+carSchema.index({ location: "2dsphere" });
 
 module.exports =  mongoose.model('car', carSchema);

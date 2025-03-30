@@ -1,6 +1,16 @@
 const carSchema = require('../models/car.model');
 
+carSchema.collection.createIndex({ location: "2dsphere" });
+
 exports.createCar = async (req, res, next) => {
+    if(req.body.location){
+        req.body.location = JSON.parse(req.body.location)
+    }
+    if(req.body.area){
+        req.body.area = JSON.parse(req.body.area)
+    }
+    req.body.host = req.session.user._id;
+    
     const car = new carSchema({
         ...req.body
     })
@@ -14,7 +24,7 @@ exports.createCar = async (req, res, next) => {
 
 exports.getCars = async (req, res, next) => {
     try {
-        const cars = await carSchema.find();
+        const cars = await carSchema.find().populate({ path: "host", select: "name email profile_pic", strictPopulate: false });
         res.status(200).json(cars)
     } catch (error) {
         console.error("Error fetching cars:", error);
@@ -48,7 +58,7 @@ exports.searchCar = async (req, res, next) => {
                         type: "Point",
                         coordinates: [lat, long]
                     },
-                    $maxDistance: 1000
+                    $maxDistance: 500000
                 }
             },
         });
