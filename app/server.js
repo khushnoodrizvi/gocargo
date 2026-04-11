@@ -1,92 +1,96 @@
-const express = require('express')
-const mongoose = require('mongoose')
-var cors = require('cors')
-const bodyParser = require('body-parser');
-const sessions = require('express-session')
-const mongoDBStrore = require('connect-mongodb-session')(sessions)
-const users = require('./routes/router')
-const auth = require('./routes/auth.router')
-const car = require('./routes/car.router')
-const { DATABASE_URL } = require('./common/config');
-const Razorpay = require('razorpay');
+// const express = require("express");
+// const mongoose = require("mongoose");
+// var cors = require("cors");
+// const bodyParser = require("body-parser");
+// // const sessions = require("express-session");
+// // const mongoDBStrore = require("connect-mongodb-session")(sessions);
+// const users = require("./routes/router");
+// const auth = require("./routes/auth.router");
+// const car = require("./routes/car.router");
+// const Razorpay = require("razorpay");
 
-const app = express()
+// const app = express();
 
-mongoose.connect(DATABASE_URL);
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
 
-const store = new mongoDBStrore({
-  uri: DATABASE_URL,
-  collection: "session"
-});
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json())
-
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://gocargo-1.netlify.app",
-];
-
-app.use(
-  cors({
-    credentials: true,
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    }
-  })
-);
+// // const allowedOrigins = [
+// //   "http://localhost:3000",
+// //   // "https://gocargo-1.netlify.app",
+// // ];
 
 
-app.use(sessions({
-  name : 'gocargo.sid',
-  secret: "my secret",
-  saveUninitialized:true,
-  resave: true,
-  store: store,
-  cookie: {
-    secure: false, // Important for local testing
-    httpOnly: true, // Prevents XSS attacks
-    sameSite: "lax", // Allows cross-origin cookies for navigation
-    maxAge: 1000 * 60 * 60 * 24,
-    path: "/", // Cookie path 
-  },
-}));
+// app.use(
+//   cors({
+//     credentials: true,
+//     origin: function (origin, callback) {
+//       if (!origin || allowedOrigins.includes(origin)) {
+//         callback(null, true);
+//       } else {
+//         callback(new Error("Not allowed by CORS"));
+//       }
+//     },
+//   })
+// );
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
+// // mongoose
+// //   .connect(DATABASE_URL)
+// //   .then(() => console.log("Connected to Database"))
+// //   .catch((err) => console.error("Error , connecting to Database", err.message));
 
-app.post("/create-order", async (req, res) => {
-  try {
-    const options = {
-      amount: req.body.amount * 100, // Amount in paise (INR)
-      currency: "INR",
-      receipt: "order_rcptid_11",
-    };
+// // // const store = new mongoDBStrore({
+// // //   uri: DATABASE_URL,
+// // //   collection: "session",
+// // // });
 
-    const order = await razorpay.orders.create(options);
-    res.json(order);
-  } catch (error) {
-    res.status(500).json({ message: "Error creating order", error });
-  }
-});
+// // // app.use(
+// // //   sessions({
+// // //     name: "gocargo.sid",
+// // //     secret: "my secret",
+// // //     saveUninitialized: true,
+// // //     resave: true,
+// // //     store: store,
+// // //     cookie: {
+// // //       secure: false, // Important for local testing
+// // //       httpOnly: true, // Prevents XSS attacks
+// // //       sameSite: "lax", // Allows cross-origin cookies for navigation
+// // //       maxAge: 1000 * 60 * 60 * 24,
+// // //       path: "/", // Cookie path
+// // //     },
+// // //   })
+// // );
 
-const db = mongoose.connection
-db.on('error', err => console.log(err))
-db.once('open', () => console.log('database connected!'))
+// const razorpay = new Razorpay({
+//   key_id: process.env.RAZORPAY_KEY_ID,
+//   key_secret: process.env.RAZORPAY_KEY_SECRET,
+// });
 
-app.use((req, res, next) => {
-  console.log(req.session)
-  next();
-})
+// app.post("/create-order", async (req, res) => {
+//   try {
+//     const options = {
+//       amount: req.body.amount * 100, // Amount in paise (INR)
+//       currency: "INR",
+//       receipt: "order_rcptid_11",
+//     };
 
-app.use('/auth',auth)
-app.use('/users',users)
-app.use('/cars',car)
+//     const order = await razorpay.orders.create(options);
+//     res.json(order);
+//   } catch (error) {
+//     res.status(500).json({ message: "Error creating order", error });
+//   }
+// });
 
-module.exports = app;
+// // const db = mongoose.connection;
+// // db.on("error", (err) => console.log(err));
+// // db.once("open", () => console.log("database connected!"));
+
+// app.use((req, res, next) => {
+//   console.log(req.session);
+//   next();
+// });
+
+// // app.use("/auth", auth);
+// // app.use("/users", users);
+// // app.use("/cars", car);
+
+// module.exports = app;

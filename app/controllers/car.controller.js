@@ -9,7 +9,10 @@ exports.createCar = async (req, res, next) => {
     if(req.body.area){
         req.body.area = JSON.parse(req.body.area)
     }
-    req.body.host = req.session.user._id;
+    if(req.body.price){
+        req.body.price = JSON.parse(req.body.price)
+    }
+    req.body.host = req.user.id;
     
     const car = new carSchema({
         ...req.body
@@ -31,6 +34,19 @@ exports.getCars = async (req, res, next) => {
         res.status(400).json({ message: error.message })
     }
 }
+    exports.getMyCars=async(req,res,next)=>{
+        try{
+            const mycars=await carSchema.find({host:req.user.id}).populate({path: "host", select:"name email profile_pic",strictPopulate:false});
+           console.log("user",req.user.id);
+           console.log("cars",mycars);
+            res.status(200).json(mycars);
+
+        }
+        catch(error){
+            console.error("Error fetching the cars",error);
+            res.status(400).json({message:error.message});
+        }
+    };
 
 exports.getCarById = async (req, res, next) => {
     try {
@@ -39,6 +55,16 @@ exports.getCarById = async (req, res, next) => {
         res.status(200).json(car)
     } catch (error) {
         res.status(400).json({ message: error.message })
+    }
+}
+
+exports.getCarByIdAndEdit=async (req,res,next)=>{
+    try{
+      console.log(req.body);
+        console.log(req.params.id); 
+    }
+    catch (error){
+        res.status(400).json({message:error.message})
     }
 }
 
