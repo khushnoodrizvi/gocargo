@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const carSchema = new Schema({
@@ -8,13 +8,13 @@ const carSchema = new Schema({
   location: {
     type: {
       type: String,
-      enum: ['Point'], // Only "Point" type is allowed
+      enum: ["Point"],
       required: true,
     },
     coordinates: {
-      type: [Number], // Array of numbers: [longitude, latitude]
+      type: [Number],
       required: true,
-      index: '2dsphere', // Enables geospatial queries
+      index: "2dsphere",
     },
   },
   area: { address: String, city: String },
@@ -30,7 +30,6 @@ const carSchema = new Schema({
   car_features: [String],
 });
 
-// Ensure the 2dsphere index is created
 carSchema.index({ location: "2dsphere" });
 
-module.exports =  mongoose.model('car', carSchema);
+module.exports = mongoose.model("car", carSchema);

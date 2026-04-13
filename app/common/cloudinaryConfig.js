@@ -13,11 +13,11 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "car_images",
-    format: async (req, file) => "png", // Optional: format can be auto
+    format: async (req, file) => "png", 
     public_id: (req, file) => file.originalname.split(".")[0],
     transformation: [
-      { width: 800, crop: "limit" }, // Resize width to max 800px
-      { quality: "auto" }, // Optimize quality automatically
+      { width: 800, crop: "limit" }, 
+      { quality: "auto" }, 
     ],
   },
 });
