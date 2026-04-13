@@ -15,7 +15,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: ["http://localhost:3001",
+    origin: 
+    [
+      // "http://localhost:3001",
       "https://drivos.netlify.app",
     ],
     credentials: true,
@@ -24,7 +26,9 @@ app.use(
 app.options(
   "*",
   cors({
-   origin: ["http://localhost:3001",
+   origin: 
+   [
+    // "http://localhost:3001",
       "https://drivos.netlify.app",
     ],
     credentials: true,
