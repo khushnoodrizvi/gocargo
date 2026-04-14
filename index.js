@@ -18,7 +18,7 @@ app.use(
     origin: 
     [
       // "http://localhost:3001",
-      "https://godrives.netlify.app/",
+      "https://godrives.netlify.app",
     ],
     credentials: true,
   }),
@@ -29,7 +29,7 @@ app.options(
    origin: 
    [
     // "http://localhost:3001",
-      "https://godrives.netlify.app/",
+      "https://godrives.netlify.app",
     ],
     credentials: true,
   }),
